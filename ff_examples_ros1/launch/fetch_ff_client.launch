@@ -1,0 +1,56 @@
+<launch>
+
+  <!-- Fetches: boot up some fake data -->
+  <arg name="map_file" default="$(find ff_examples_ros1)/maps/world.yaml"/>
+
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+
+  <node name="fake_action_server" pkg="free_fleet_client_ros1"
+      type="fake_action_server"/>
+
+  <node pkg="tf" type="static_transform_publisher"
+      name="fake_robot_transform"
+      args="0.0 0.0 0.0 0.0 0.0 0.0 1.0 base_footprint map 200"/>
+  <!-- end of fake stuff -->
+
+  <node name="free_fleet_client_node"
+       pkg="free_fleet_client_ros1"
+       type="free_fleet_client_ros1" output="screen">
+
+  <!-- These parameters will be used to identify the mobile robots -->
+  <param name="fleet_name" type="string" value="fetch_fleet"/>
+  <param name="robot_name" type="string" value="fetch_sim1"/>
+
+  <!-- These are the topics required to get battery and level information -->
+  <param name="battery_state_topic" type="string" value="/battery"/>
+  <param name="level_name_topic" type="string" value="/level_name"/>
+
+  <!-- These frames will be used to update the mobile robot's location -->
+  <param name="map_frame" type="string" value="map"/>
+  <param name="robot_frame" type="string" value="base_footprint"/>
+
+  <!-- The name of the move_base server for actions -->
+  <param name="move_base_server_name" type="string" value="/move_base"/>
+
+  <!-- These are DDS configurations used between Free Fleet clients and servers -->
+  <param name="dds_domain" type="int" value="42"/>
+  <param name="dds_state_topic" type="string" value="robot_state"/>
+  <param name="dds_mode_request_topic" type="string" value="mode_request"/>
+  <param name="dds_path_request_topic" type="string" value="path_request"/>
+  <param name="dds_destination_request_topic" type="string" value="destination_request"/>
+
+  <!-- This decides how long the client should wait for a valid transform and action server before failing -->
+  <param name="wait_timeout" type="double" value="10"/>
+
+  <!-- These define the frequency at which the client checks for commands and
+  publishes the robot state to the server -->
+  <param name="update_frequency" type="double" value="10.0"/>
+  <param name="publish_frequency" type="double" value="1.0"/>
+
+  <!-- The client will only pass on navigation commands if the destination or first waypoint
+  of the path is within this distance away, otherwise it will ignore the command -->
+  <param name="max_dist_to_first_waypoint" type="double" value="10.0"/>
+
+  </node>
+
+</launch>
