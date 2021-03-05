@@ -1,12 +1,14 @@
 <launch>
 
+  <arg name="robot_name" default="fetchXX"/>
+
   <node name="free_fleet_client_node"
        pkg="free_fleet_client_ros1"
        type="free_fleet_client_ros1" output="screen">
 
   <!-- These parameters will be used to identify the mobile robots -->
   <param name="fleet_name" type="string" value="fetch_fleet"/>
-  <param name="robot_name" type="string" default="fetchXX"/>
+  <param name="robot_name" type="string" value="$(arg robot_name)"/>
 
   <!-- These are the topics required to get battery and level information -->
   <param name="battery_state_topic" type="string" value="/battery"/>
