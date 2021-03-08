@@ -7,7 +7,7 @@
        type="free_fleet_client_ros1" output="screen">
 
   <!-- These parameters will be used to identify the mobile robots -->
-  <param name="fleet_name" type="string" value="fetch_fleet"/>
+  <param name="fleet_name" type="string" value="fetch"/>
   <param name="robot_name" type="string" value="$(arg robot_name)"/>
 
   <!-- These are the topics required to get battery and level information -->
