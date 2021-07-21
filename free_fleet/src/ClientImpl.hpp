@@ -48,6 +48,21 @@ public:
     dds::DDSPublishHandler<FreeFleetData_RobotState>::SharedPtr
         state_pub;
 
+    /// DDS publisher that handles sending out current scans to the 
+    /// server
+    dds::DDSPublishHandler<FreeFleetData_Scan>::SharedPtr
+        scan_pub;
+
+    /// DDS publisher that handles sending out current images to the 
+    /// server
+    dds::DDSPublishHandler<FreeFleetData_Scan>::SharedPtr
+        image_pub;
+
+    /// DDS publisher that handles sending out current diagnostics to the 
+    /// server
+    dds::DDSPublishHandler<FreeFleetData_Scan>::SharedPtr
+        diagnostics_pub;
+
     /// DDS subscriber for mode requests coming from the server
     dds::DDSSubscribeHandler<FreeFleetData_ModeRequest>::SharedPtr 
         mode_request_sub;
@@ -68,6 +83,9 @@ public:
   void start(Fields fields);
 
   bool send_robot_state(const messages::RobotState& new_robot_state);
+  bool send_scan(const messages::Scan& new_scan);
+  bool send_image(const messages::Image& new_image);
+  bool send_diagnostics(const messages::Diagnostics& new_diagnostics);
 
   bool read_mode_request(messages::ModeRequest& mode_request);
 

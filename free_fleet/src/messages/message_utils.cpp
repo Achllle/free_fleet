@@ -95,6 +95,53 @@ void convert(const FreeFleetData_RobotState& _input, RobotState& _output)
   }
 }
 
+void convert(const Scan& _input, FreeFleetData_Scan& _output)
+{
+  convert(_output.header, _input.header);
+  _output.angle_min = common::dds_string_alloc_and_copy(_input.angle_min);
+  _output.angle_max = common::dds_string_alloc_and_copy(_input.angle_min);
+  _output.angle_increment = common::dds_string_alloc_and_copy(_input.angle_increment);
+  _output.time_increment = common::dds_string_alloc_and_copy(_input.time_increment);
+  _output.scan_time = common::dds_string_alloc_and_copy(_input.scan_time);
+  _output.range_min = common::dds_string_alloc_and_copy(_input.range_min);
+  _output.range_max = common::dds_string_alloc_and_copy(_input.range_max);
+
+  size_t ranges_length = _input.ranges.size();
+  _output.ranges._maximum = static_cast<uint32_t>(ranges_length);
+  _output.ranges._length = static_cast<uint32_t>(ranges_length);
+  _output.ranges._buffer = 
+      FreeFleetData_Scan_ranges_seq_allocbuf(ranges_length);
+  _output.ranges._release = false;
+  for (size_t i = 0; i < ranges_length; ++i)
+    convert(_input.ranges[i], _output.ranges._buffer[i]);
+
+  size_t intensities_length = _input.intensities.size();
+  _output.intensities._maximum = static_cast<uint32_t>(intensities_length);
+  _output.intensities._length = static_cast<uint32_t>(intensities_length);
+  _output.intensities._buffer = 
+      FreeFleetData_Scan_intensities_seq_allocbuf(intensities_length);
+  _output.intensities._release = false;
+  for (size_t i = 0; i < intensities_length; ++i)
+    convert(_input.intensities[i], _output.intensities._buffer[i]);
+}
+
+void convert(const FreeFleetData_Scan& _input, Scan& _output)
+{
+  _output.name = std::string(_input.name);
+  _output.model = std::string(_input.model);
+  _output.task_id = std::string(_input.task_id);
+  convert(_input.mode, _output.mode);
+  _output.battery_percent = _input.battery_percent;
+  convert(_input.location, _output.location);
+
+  _output.path.clear();
+  for (uint32_t i = 0; i < _input.path._length; ++i)
+  {
+    Location tmp;
+    convert(_input.path._buffer[i], tmp);
+    _output.path.push_back(tmp);
+  }
+}
 
 void convert(const ModeParameter& _input, FreeFleetData_ModeParameter& _output)
 {

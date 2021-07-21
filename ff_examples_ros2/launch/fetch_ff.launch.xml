@@ -10,6 +10,9 @@
     <param name="fleet_name" value="fetch"/>
 
     <param name="fleet_state_topic" value="fleet_states"/>
+    <param name="scans_topic" value="scans"/>
+    <param name="diagnostics_topic" value="diagnostics"/>
+    <param name="images_topic" value="images"/>
     <param name="mode_request_topic" value="robot_mode_requests"/>
     <param name="path_request_topic" value="robot_path_requests"/>
     <param name="destination_request_topic" value="robot_destination_requests"/>

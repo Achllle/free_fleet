@@ -56,6 +56,60 @@ bool Server::ServerImpl::read_robot_states(
   return false;
 }
 
+bool Server::ServerImpl::read_scans(
+    std::vector<messages::Scan>& _new_scans)
+{
+  auto scans = fields.scan_sub->read();
+  if (!scans.empty())
+  {
+    _new_scans.clear();
+    for (size_t i = 0; i < scans.size(); ++i)
+    {
+      messages::Scan tmp_scan;
+      convert(*(scans[i]), tmp_scan);
+      _new_scans.push_back(tmp_scan);
+    }
+    return true;
+  }
+  return false;
+}
+
+bool Server::ServerImpl::read_images(
+    std::vector<messages::Image>& _new_images)
+{
+  auto images = fields.image_sub->read();
+  if (!images.empty())
+  {
+    _new_images.clear();
+    for (size_t i = 0; i < images.size(); ++i)
+    {
+      messages::Image tmp_image;
+      convert(*(images[i]), tmp_image);
+      _new_images.push_back(tmp_image);
+    }
+    return true;
+  }
+  return false;
+}
+
+bool Server::ServerImpl::read_diagnostics(
+    std::vector<messages::Diagnostics>& _new_diagnostics)
+{
+  auto diagnostics = fields.diagnostic_sub->read();
+  if (!diagnostics.empty())
+  {
+    _new_diagnostics.clear();
+    for (size_t i = 0; i < diagnostics.size(); ++i)
+    {
+      messages::Diagnostics tmp_diagnostic;
+      convert(*(diagnostics[i]), tmp_diagnostic);
+      _new_diagnostics.push_back(tmp_diagnostic);
+    }
+    return true;
+  }
+  return false;
+}
+
 bool Server::ServerImpl::send_mode_request(
     const messages::ModeRequest& _mode_request)
 {

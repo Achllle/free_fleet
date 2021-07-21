@@ -48,6 +48,36 @@ bool Client::ClientImpl::send_robot_state(
   return sent;
 }
 
+bool Client::ClientImpl::send_scan(
+    const messages::Scan& _new_scan)
+{
+  FreeFleetData_Scan* new_rs = FreeFleetData_Scan__alloc();
+  convert(_new_scan, *new_rs);
+  bool sent = fields.state_pub->write(new_rs);
+  FreeFleetData_Scan_free(new_rs, DDS_FREE_ALL);
+  return sent;
+}
+
+bool Client::ClientImpl::send_image(
+    const messages::Image& _new_image)
+{
+  FreeFleetData_Image* new_rs = FreeFleetData_Image__alloc();
+  convert(_new_image, *new_rs);
+  bool sent = fields.state_pub->write(new_rs);
+  FreeFleetData_Image_free(new_rs, DDS_FREE_ALL);
+  return sent;
+}
+
+bool Client::ClientImpl::send_diagnostics(
+    const messages::Diagnostics& _new_diagnostics)
+{
+  FreeFleetData_Diagnostics* new_rs = FreeFleetData_Diagnostics__alloc();
+  convert(_new_diagnostics, *new_rs);
+  bool sent = fields.state_pub->write(new_rs);
+  FreeFleetData_Diagnostics_free(new_rs, DDS_FREE_ALL);
+  return sent;
+}
+
 bool Client::ClientImpl::read_mode_request
     (messages::ModeRequest& _mode_request)
 {

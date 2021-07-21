@@ -19,6 +19,9 @@
 #define FREE_FLEET__SRC__SERVERIMPL_HPP
 
 #include <free_fleet/messages/RobotState.hpp>
+#include <free_fleet/messages/Image.hpp>
+#include <free_fleet/messages/Diagnostics.hpp>
+#include <free_fleet/messages/Scan.hpp>
 #include <free_fleet/messages/ModeRequest.hpp>
 #include <free_fleet/messages/PathRequest.hpp>
 #include <free_fleet/messages/DestinationRequest.hpp>
@@ -47,6 +50,18 @@ public:
     dds::DDSSubscribeHandler<FreeFleetData_RobotState, 10>::SharedPtr 
         robot_state_sub;
 
+    /// DDS subscribers for new incoming scans from clients
+    dds::DDSSubscribeHandler<FreeFleetData_RobotState, 10>::SharedPtr 
+        scan_sub;
+
+    /// DDS subscribers for new incoming images from clients
+    dds::DDSSubscribeHandler<FreeFleetData_RobotState, 10>::SharedPtr 
+        image_sub;
+
+    /// DDS subscribers for new incoming diagnostics from clients
+    dds::DDSSubscribeHandler<FreeFleetData_RobotState, 10>::SharedPtr 
+        diagnostics_sub;
+    
     /// DDS publisher for mode requests to be sent to clients
     dds::DDSPublishHandler<FreeFleetData_ModeRequest>::SharedPtr
         mode_request_pub;
@@ -67,6 +82,9 @@ public:
   void start(Fields fields);
 
   bool read_robot_states(std::vector<messages::RobotState>& new_robot_states);
+  bool read_scans(std::vector<messages::Scan>& new_scans);
+  bool read_images(std::vector<messages::Image>& new_images);
+  bool read_diagnostics(std::vector<messages::Diagnostics>& new_diagnostics);
 
   bool send_mode_request(const messages::ModeRequest& mode_request);
 

@@ -44,6 +44,21 @@ Client::SharedPtr Client::make(const ClientConfig& _config)
           participant, &FreeFleetData_RobotState_desc,
           _config.dds_state_topic));
 
+  dds::DDSPublishHandler<FreeFleetData_Scan>::SharedPtr scan_pub(
+      new dds::DDSPublishHandler<FreeFleetData_Scan>(
+          participant, &FreeFleetData_Scan_desc,
+          _config.dds_state_topic));
+
+  dds::DDSPublishHandler<FreeFleetData_Image>::SharedPtr image_pub(
+      new dds::DDSPublishHandler<FreeFleetData_Image>(
+          participant, &FreeFleetData_Image_desc,
+          _config.dds_state_topic));
+
+  dds::DDSPublishHandler<FreeFleetData_Diagnostics>::SharedPtr diagnostics_pub(
+      new dds::DDSPublishHandler<FreeFleetData_Diagnostics>(
+          participant, &FreeFleetData_Diagnostics_desc,
+          _config.dds_state_topic));
+
   dds::DDSSubscribeHandler<FreeFleetData_ModeRequest>::SharedPtr 
       mode_request_sub(
           new dds::DDSSubscribeHandler<FreeFleetData_ModeRequest>(
@@ -63,6 +78,9 @@ Client::SharedPtr Client::make(const ClientConfig& _config)
               _config.dds_destination_request_topic));
 
   if (!state_pub->is_ready() ||
+      !scan_pub->is_ready() ||
+      !image_pub->is_ready() ||
+      !diagnostics_pub->is_ready() ||
       !mode_request_sub->is_ready() ||
       !path_request_sub->is_ready() ||
       !destination_request_sub->is_ready())
@@ -71,6 +89,9 @@ Client::SharedPtr Client::make(const ClientConfig& _config)
   client->impl->start(ClientImpl::Fields{
       std::move(participant),
       std::move(state_pub),
+      std::move(scan_pub),
+      std::move(image_pub),
+      std::move(diagnostics_pub),
       std::move(mode_request_sub),
       std::move(path_request_sub),
       std::move(destination_request_sub)});
@@ -90,6 +111,21 @@ bool Client::send_robot_state(const messages::RobotState& _new_robot_state)
   return impl->send_robot_state(_new_robot_state);
 }
 
+bool Client::send_scan(const messages::Scan& _new_scan)
+{
+  return impl->send_scan(_new_scan);
+}
+
+bool Client::send_image(const messages::Image& _new_image)
+{
+  return impl->send_image(_new_image);
+}
+
+bool Client::send_diagnostics(const messages::Diagnostics& _new_diagnostics)
+{
+  return impl->send_diagnostics(_new_diagnostics);
+}
+
 bool Client::read_mode_request(messages::ModeRequest& _mode_request)
 {
   return impl->read_mode_request(_mode_request);
@@ -104,6 +140,4 @@ bool Client::read_destination_request(
     messages::DestinationRequest& _destination_request)
 {
   return impl->read_destination_request(_destination_request);
-}
-
-} // namespace free_fleet
+}RobotState

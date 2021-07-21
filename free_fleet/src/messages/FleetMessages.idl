@@ -35,6 +35,58 @@ module FreeFleetData
     Location location;
     sequence<Location> path;
   };
+  struct Time
+  {
+    unsigned long sec;
+    unsigned long nsec;
+  };
+  struct Header
+  {
+    unsigned long seq;
+    Time stamp;
+    string frame_id;
+  };
+  struct Scan
+  {
+    Header header;
+    float angle_min;
+    float angle_max;
+    float angle_increment;
+    float time_increment;
+    float scan_time;
+    float range_min;
+    float range_max;
+    sequence<float> ranges;
+    sequence<float> intensities;
+  };
+  struct Image
+  {
+    Header header;
+    unsigned long height;
+    unsigned long width;
+    string encoding;
+    octet is_bigendian;
+    unsigned long step;
+    sequence<octet> data;
+  };
+  struct KeyValue
+  {
+    string key;
+    string value;
+  }
+  struct DiagnosticStatus
+  {
+    char level;
+    string name;
+    string message;
+    string hardware_id;
+    sequence<KeyValue> values;
+  };
+  struct Diagnostics
+  {
+    Header header;
+    sequence<DiagnosticStatus> status;
+  };
   struct ModeParameter
   {
     string name;

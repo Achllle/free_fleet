@@ -13,6 +13,10 @@
   <!-- These are the topics required to get battery and level information -->
   <param name="battery_state_topic" type="string" value="/battery"/>
   <param name="level_name_topic" type="string" value="/level_name"/>
+  <!-- These are the topics required to get camera, scan, and diagnostics information -->
+  <param name="diagnostics_topic" type="string" value="/diagnostics"/>
+  <param name="camera_topic" type="string" value="/head_camera/rgb/image_raw"/>
+  <param name="scan_topic" type="string" value="/scan"/>
 
   <!-- These frames will be used to update the mobile robot's location -->
   <param name="map_frame" type="string" value="map"/>

@@ -21,6 +21,9 @@
 #include <free_fleet/messages/Location.hpp>
 #include <free_fleet/messages/RobotMode.hpp>
 #include <free_fleet/messages/RobotState.hpp>
+#include <free_fleet/messages/Scan.hpp>
+#include <free_fleet/messages/Image.hpp>
+#include <free_fleet/messages/Diagnostics.hpp>
 #include <free_fleet/messages/ModeParameter.hpp>
 #include <free_fleet/messages/ModeRequest.hpp>
 #include <free_fleet/messages/PathRequest.hpp>
@@ -42,6 +45,18 @@ void convert(const FreeFleetData_Location& _input, Location& _output);
 void convert(const RobotState& _input, FreeFleetData_RobotState& _output);
 
 void convert(const FreeFleetData_RobotState& _input, RobotState& _output);
+
+void convert(const Scan& _input, FreeFleetData_Scan& _output);
+
+void convert(const FreeFleetData_Scan& _input, Scan& _output);
+
+void convert(const Image& _input, FreeFleetData_Image& _output);
+
+void convert(const FreeFleetData_Image& _input, Image& _output);
+
+void convert(const Diagnostics& _input, FreeFleetData_Diagnostics& _output);
+
+void convert(const FreeFleetData_Diagnostics& _input, Diagnostics& _output);
 
 void convert(const ModeParameter& _input, FreeFleetData_ModeParameter& _output);
 
